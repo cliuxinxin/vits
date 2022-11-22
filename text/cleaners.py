@@ -15,6 +15,10 @@ hyperparameter. Some cleaners are English-specific. You'll typically want to use
 import re
 from unidecode import unidecode
 from phonemizer import phonemize
+import pypinyin
+from pypinyin import lazy_pinyin
+import cn2an
+import re
 
 
 # Regular expression matching whitespace:
@@ -66,6 +70,14 @@ def convert_to_ascii(text):
 
 
 def basic_cleaners(text):
+  '''Basic pipeline that lowercases and collapses whitespace without transliteration.'''
+  text = cn2an.transform(text, "an2cn")
+  text = lazy_pinyin(text,style=pypinyin.TONE3)
+  text = " ".join(text)
+  text = re.sub(r'[a-z]\d', lambda x: x.group(0)[0] + list("①①②③④")[int(x.group(0)[1])], text)
+  return text
+
+def basic_cleaners_bak(text):
   '''Basic pipeline that lowercases and collapses whitespace without transliteration.'''
   text = lowercase(text)
   text = collapse_whitespace(text)
