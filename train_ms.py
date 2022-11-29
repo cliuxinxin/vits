@@ -61,7 +61,7 @@ def run(rank, n_gpus, hps):
 
   dist.init_process_group(backend='nccl', init_method='env://', world_size=n_gpus, rank=rank)
   torch.manual_seed(hps.train.seed)
-  torch.cuda.set_device(rank)
+  torch.cuda.set_device(0)
 
   train_dataset = TextAudioSpeakerLoader(hps.data.training_files, hps.data)
   train_sampler = DistributedBucketSampler(
@@ -132,7 +132,7 @@ def train_and_evaluate(rank, epoch, hps, nets, optims, schedulers, scaler, loade
   if writers is not None:
     writer, writer_eval = writers
 
-  train_loader.batch_sampler.set_epoch(epoch)
+  # train_loader.batch_sampler.set_epoch(epoch)
   global global_step
 
   net_g.train()
@@ -294,3 +294,4 @@ def evaluate(hps, generator, eval_loader, writer_eval):
                            
 if __name__ == "__main__":
   main()
+
