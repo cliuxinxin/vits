@@ -143,7 +143,7 @@ def load_filepaths_and_text(filename, split="|"):
 
 def get_hparams(init=True):
   model = 'vits'
-  config = "./configs/mult_base.json"
+  config = "./configs/base.json"
 
   model_dir = os.path.join("./logs", model)
 
