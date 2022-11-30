@@ -6,7 +6,7 @@ text_cleaners = "basic_cleaners"
 
 def read_metadata(file,is_cleaned=False,id=0):
     df = pd.read_csv(file, sep='|', header=None, names=['path', 'text'])
-    # df['id'] = id
+    df['id'] = id
     if is_cleaned:
         return df
     df['text'] = df['text'].apply(lambda x: text._clean_text(x, [text_cleaners]))
@@ -20,7 +20,7 @@ df_train = []
 df_dev = []
 pati = 0.1
 
-for df in [df_3]:
+for df in [df_1,df_2,df_3]:
     df = df.sample(frac=1)
     df_train.append(df[:int(len(df)*(1-pati))])
     df_dev.append(df[int(len(df)*(1-pati)):])
